@@ -141,7 +141,7 @@ Date: 20190501
     write.table(NET,file=paste0(SAVE_DIR,'/','NET.txt'),sep='\t',row.names=F,col.names=T,quote=F)
        
     CN=getCN(NET)
-    pdf('5DPlot.pdf',width=20,height=20)
+    pdf(paste0(SAVE_DIR,'/','5DPlot.pdf'),width=20,height=20)
     DP=DPlot(NET, CN, COL=3)
     dev.off()
     
@@ -166,7 +166,7 @@ Date: 20190501
     TOP_NET=NET
     #TOP_NET=getNET(PAIR[1:500,], BINTAG,ORITAG )
     
-    pdf('6LPlot.pdf',width=50,height=50)
+    pdf(paste0(SAVE_DIR,'/','6LPlot.pdf'),width=50,height=50)
     OUT=c()
     #OUT_TYPE=c()
     RCN=trunc(sqrt(length(SIG_PAIR))+1)
@@ -211,6 +211,28 @@ Date: 20190501
     OUT_RT=apply(matrix(OUT[,3],ncol=1),1,get_RT)
     
     
+<img src="https://github.com/jumphone/Bioinformatics/raw/master/scRNAseq/try_20190424/src/LPlot.png" width="300">    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     library(plotly)
     
@@ -226,7 +248,7 @@ Date: 20190501
     marker = list(color=COL),
     showlegend = F
     )
-    htmlwidgets::saveWidget(as_widget(p), "TumorLR.html")
+    htmlwidgets::saveWidget(as_widget(p), paste0(SAVE_DIR,'/',"TumorLR.html"))
     
     library(plotly)
     
@@ -247,7 +269,7 @@ Date: 20190501
     
     
     
-<img src="https://github.com/jumphone/Bioinformatics/raw/master/scRNAseq/try_20190424/src/LPlot.png" width="300">
+
 
     TAG=groupTAG(BINTAG,LT="LGroup",RT='RGroup',LC=c(1,2,3),RC=c(4,5,6))
     TMP=getNET(PAIR, BINTAG, TAG )
