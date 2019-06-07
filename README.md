@@ -180,7 +180,7 @@ Date: 20190501
         LP=LPlot(LT, RT, TOP_NET, PMAT,LR, MAIN=paste0(as.character(SIG_INDEX[i]),' ',SIG_PAIR[i]),SEED=12345,PCUT=0.05)    
         #########################
         this_out_index=which(LP[,1]>-log(0.05,10) & LP[,2]>-log(0.05,10))
-        this_out=t(LP)[,c(this_out_index,this_out_index)
+        this_out=t(LP)[,c(this_out_index,this_out_index)]
         
         if(length(this_out_index)>0){ 
             colnames(this_out)=paste0(SIG_PAIR[i],'_|_',colnames(this_out))
