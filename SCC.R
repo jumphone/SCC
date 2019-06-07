@@ -480,8 +480,8 @@ getMLR <- function(CLUST, LR, PMAT){
         
         M_this_l=TAG[which(names(CLUST)==this_l)]
         M_this_r=TAG[which(names(CLUST)==this_r)]
-        
-        MLR=cbind(MLR,c(this_l,this_r,M_this_l,M_this_r))
+        if(M_this_l!=M_this_r){
+        MLR=cbind(MLR,c(this_l,this_r,M_this_l,M_this_r))}
     }
     i=i+1
     }
