@@ -1,8 +1,6 @@
 # SCC
 Single-cell Communication
 
-
-
 <img src="https://github.com/jumphone/Bioinformatics/raw/master/scRNAseq/try_20190424/src/SCC_LOGO.png" width="200">
 
 ### Single-Cell Communication (SCC) Toolkit 
@@ -10,7 +8,12 @@ Single-cell Communication
 Author: Feng Zhang
  
 Date: 20190501
-    
+
+### Prepare:
+
+    hash, Seurat, Rtsne
+
+
 ### Usage:
 
     library('Seurat')
@@ -21,40 +24,59 @@ Date: 20190501
     
     pbmc=load('pbmc.RDS') # load Seurat Object
     
+    
     #---- !!! Changed in Seurat 3.0 !!! ----
-    pbmc.raw.data=getSeuratRAW(pbmc@raw.data, pbmc@scale.data)
-    pbmc.data=as.matrix(pbmc@scale.data)
-    used_gene=pbmc@var.genes  
+    ORITAG=as.character(pbmc@ident)
+    #--------------------------------------- 
+    #ORITAG=as.character(pbmc@active.ident)
+    #---------------------------------------     
+    
+    #---- !!! Changed in Seurat 3.0 !!! ----
+    VEC=pbmc@dr$umap@cell.embeddings
+    #--------------------------------------- 
+    # For Seurat 3.0, please use:
+    #VEC=pbmc@reductions$umap@cell.embeddings
+    #---------------------------------------
+    
+    #---- !!! Changed in Seurat 3.0 !!! ----
+    pbmc.data=as.matrix(pbmc@scale.data) 
     #---------------------------------------
     # For Seurat==3.0, please use:
-    # pbmc.raw.data=getSeuratRAW(pbmc@assays$RNA@counts, pbmc@assays$RNA@scale.data)
     # pbmc.data=as.matrix(pbmc@assays$RNA@scale.data)
-    # used_gene=VariableFeatures(object = pbmc)
     #---------------------------------------
-        
-    pbmc.raw.data=pbmc.raw.data[which(rownames(pbmc.raw.data) %in% used_gene),]
-    pbmc.data=pbmc.data[which(rownames(pbmc.data) %in% used_gene),]
+   
+    SAVE_DIR="./"
     
-    #---- !!! Changed in Seurat 3.0 !!! ----
-    source('https://raw.githubusercontent.com/jumphone/BEER/master/BEER.R')  
-    #---------------------------------------
-    # For Seurat==3.0, please use:
-    # source('https://raw.githubusercontent.com/jumphone/BEER/master/BEER_Seurat3.R')
-    #---------------------------------------
+    used_cell=
     
-    ONE=.data2one(pbmc.raw.data, used_gene, CPU=4, PCNUM=50, SEED=123,  PP=30)
-    saveRDS(ONE,file='ONE.RDS')
+    used_gene=
+    
+    USEDC=which(colnames(pbmc.data) %in% used_cell)
+    USEDG=which(rownames(pbmc.data) %in% used_gene)
+    
+    pbmc.data=pbmc.data[USEDG,USEDC]
+    VEC=VEC[USEDC]
+    ORITAG=ORITAG[USEDC]
+    
+    #########################################
+    
+    
+    
+    library('Rtsne')
+    T1=Rtsne(VEC,dims=1)
+    ONE=T1$Y  
+    saveRDS(ONE,file=paste0(SAVE_DIR,'/','ONE.RDS'))
     
     NUM=100
     
     OUT=getBIN(ONE,NUM=NUM)
     BIN=OUT$BIN
     BINTAG=OUT$TAG
-    saveRDS(BIN,file='BIN.RDS')
-    saveRDS(BINTAG,file='BINTAG.RDS')
+    saveRDS(BIN,file=paste0(SAVE_DIR,'/','BIN.RDS'))
+    saveRDS(BINTAG,file=paste0(SAVE_DIR,'/','BINTAG.RDS'))
     
     pbmc@meta.data$bin=BINTAG
-    pdf('1ID.pdf',width=12,height=10)
+    pdf(paste0(SAVE_DIR,'/','1ID.pdf'),width=12,height=10)
     DimPlot(pbmc,group.by='bin',reduction.use='umap',do.label=T)
     dev.off()
     
@@ -66,23 +88,19 @@ Date: 20190501
     EXP=pbmc.data
     
     MEAN=getMEAN(EXP, LR, NUM=NUM)
-    saveRDS(MEAN,file='MEAN.RDS')
+    saveRDS(MEAN,file=paste0(SAVE_DIR,'/','MEAN.RDS'))
         
     PMAT=getPMAT(EXP, LR, BIN, MEAN)
-    saveRDS(PMAT,file='PMAT.RDS')
+    saveRDS(PMAT,file=paste0(SAVE_DIR,'/','PMAT.RDS'))
     
-    #DIST=cor(t(PMAT),method='spearman')
-    #OOO=.data2one((DIST+1), colnames(DIST), CPU=4, PCNUM=50, SEED=123,  PP=30)
-    #ORDER=order(OOO)
-    
-    pdf('GCOR.pdf',width=20,height=20)
+    pdf(paste0(SAVE_DIR,'/','GCOR.pdf'),width=20,height=20)
     OUT=getPmatHEAT(PMAT,SHOW=T)
     dev.off()
     HEAT=OUT$HEAT
     DIST=OUT$DIST
     ORDER=HEAT$colInd
     
-    pdf('2CLUST.pdf',width=20,height=20)
+    pdf(paste0(SAVE_DIR,'/','2CLUST.pdf'),width=20,height=20)
     CLUST=getCLUST(ORDER, DIST, CCUT=0.7, SHOW=T)
     dev.off()
     
@@ -93,9 +111,9 @@ Date: 20190501
     LR=MLR[,c(1:2)]
 
     CMAT=getCMAT(EXP,LR,PMAT,BI=TRUE)
-    saveRDS(CMAT,file='CMAT.RDS')
+    saveRDS(CMAT,file=paste0(SAVE_DIR,'/','CMAT.RDS'))
     
-    pdf('3CMAT.pdf',width=15,height=13)
+    pdf(paste0(SAVE_DIR,'/','3CMAT.pdf'),width=15,height=13)
     library('gplots')
     heatmap.2(log(CMAT+1,10),scale=c("none"),dendrogram='both',Colv=T,Rowv=T,trace='none',
       col=colorRampPalette(c('blue3','grey95','red3')) ,margins=c(10,15))
@@ -109,29 +127,18 @@ Date: 20190501
     PAIR=OUT$PAIR
     SCORE=OUT$SCORE
     RANK=OUT$RANK
-    saveRDS(PAIR,file='PAIR.RDS')
-   
-    #---- !!! Changed in Seurat 3.0 !!! ----
-    VEC=pbmc@dr$umap@cell.embeddings
-    #--------------------------------------- 
-    # For Seurat 3.0, please use:
-    # VEC=pbmc@reductions$umap@cell.embeddings
-    #---------------------------------------
+    saveRDS(PAIR,file=paste0(SAVE_DIR,'/','PAIR.RDS'))
     
-    pdf('4CPlot_TOP200.pdf',width=12,height=10)
+    pdf(paste0(SAVE_DIR,'/','4CPlot_TOP200.pdf'),width=12,height=10)
     CPlot(VEC,PAIR[1:200,],BINTAG)
     dev.off()
 
 <img src="https://github.com/jumphone/Bioinformatics/raw/master/scRNAseq/try_20190424/src/CPlot.png" width="300">
     
-    #---- !!! Changed in Seurat 3.0 !!! ----
-    ORITAG=as.character(pbmc@ident)
-    #--------------------------------------- 
-    #ORITAG=as.character(pbmc@active.ident)
-    #--------------------------------------- 
+    
     
     NET=getNET(PAIR, BINTAG,ORITAG )
-    write.table(NET,file='NET.txt',sep='\t',row.names=F,col.names=T,quote=F)
+    write.table(NET,file=paste0(SAVE_DIR,'/','NET.txt'),sep='\t',row.names=F,col.names=T,quote=F)
        
     CN=getCN(NET)
     pdf('5DPlot.pdf',width=20,height=20)
@@ -146,7 +153,7 @@ Date: 20190501
     DD=sort(-log(IDP,10),decreasing=T)
     CC=rep('grey',length(DD))
     CC[which(DD> -log(0.05,10))]='red'
-    pdf('PVALUE.pdf',width=20,height=20)
+    pdf(paste0(SAVE_DIR,'/','PVALUE.pdf'),width=20,height=20)
     par(mar=c(20,5,5,5))
     barplot(DD,las=2,ylab='-log10(adjusted p-value)',col=CC)
     dev.off()
@@ -173,16 +180,14 @@ Date: 20190501
         LP=LPlot(LT, RT, TOP_NET, PMAT,LR, MAIN=paste0(as.character(SIG_INDEX[i]),' ',SIG_PAIR[i]),SEED=12345,PCUT=0.05)    
         #########################
         this_out_index=which(LP[,1]>-log(0.05,10) & LP[,2]>-log(0.05,10))
-        this_out=t(LP)[,c(this_out_index,this_out_index)]
-        
-        #OUT_TYPE=c(OUT_TYPE, rep(SIG_PAIR[i],length(this_out_index))) 
+        this_out=t(LP)[,c(this_out_index,this_out_index)
         
         if(length(this_out_index)>0){ 
             colnames(this_out)=paste0(SIG_PAIR[i],'_|_',colnames(this_out))
             OUT=cbind(OUT,this_out)}
         #####
         colnames(LP)=paste0(c('Lexp','Rexp'),'_',c(LT,RT))
-        write.table(LP,file=paste0(as.character(SIG_INDEX[i]),'.tsv'),row.names=T,col.names=T,sep='\t',quote=F)
+        write.table(LP,file=paste0(SAVE_DIR,'/',as.character(SIG_INDEX[i]),'.tsv'),row.names=T,col.names=T,sep='\t',quote=F)
         })
         print(i)
         i=i+1}
@@ -237,7 +242,7 @@ Date: 20190501
     marker = list(color=COL),
     showlegend = F
     )
-    htmlwidgets::saveWidget(as_widget(p), "ProliferatingLR.html")
+    htmlwidgets::saveWidget(as_widget(p), paste0(SAVE_DIR,'/',"ProliferatingLR.html"))
     
     
     
