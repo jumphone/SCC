@@ -193,6 +193,12 @@ Date: 20190501
         i=i+1}
     dev.off()
     
+<img src="https://github.com/jumphone/Bioinformatics/raw/master/scRNAseq/try_20190424/src/LPlot.png" width="300">    
+    
+       
+    
+    
+    ############################################
     OUT=t(OUT)
     OUT=unique(cbind(OUT,rownames(OUT)))
     
@@ -210,10 +216,9 @@ Date: 20190501
     OUT_LT=apply(matrix(OUT[,3],ncol=1),1,get_LT)
     OUT_RT=apply(matrix(OUT[,3],ncol=1),1,get_RT)
     
+    OUT=cbind(OUT,OUT_LT,OUT_RT)
     
-<img src="https://github.com/jumphone/Bioinformatics/raw/master/scRNAseq/try_20190424/src/LPlot.png" width="300">    
-    
-    
+ 
     
     
     
