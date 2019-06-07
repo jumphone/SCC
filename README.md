@@ -55,7 +55,7 @@ Date: 20190501
     USEDG=which(rownames(pbmc.data) %in% used_gene)
     
     pbmc.data=pbmc.data[USEDG,USEDC]
-    VEC=VEC[USEDC]
+    VEC=VEC[USEDC,]
     ORITAG=ORITAG[USEDC]
     
     #########################################
