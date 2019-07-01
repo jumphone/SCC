@@ -161,7 +161,7 @@ Author: Feng Zhang
     
     OUT=cbind(t(CNET),CNETSCORE)
     colnames(OUT)=c('source','target','score_neg_log_adp')
-    write.table(OUT,file='CNET.txt',quote=F,sep='\t',row.names=F,col.names=F)
+    write.table(OUT,file=paste0(SAVE_DIR,'/','CNET.txt'),quote=F,sep='\t',row.names=F,col.names=F)
     
 
 
