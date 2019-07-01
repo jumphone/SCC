@@ -65,7 +65,7 @@ Author: Feng Zhang
     DimPlot(pbmc,group.by='bin',reduction.use='umap', label=T)
     dev.off()
     
-<img src="https://github.com/jumphone/Bioinformatics/raw/master/scRNAseq/try_20190424/src/ID.png" width="300">
+<img src="https://github.com/jumphone/SCC/blob/master/img/PLOT1.png" width="300">
 
     LR=read.table('ReceptorLigand.txt.mouse',header=T,sep='\t')
     #https://github.com/jumphone/Bioinformatics/tree/master/scRNAseq/RecLig/
@@ -81,6 +81,9 @@ Author: Feng Zhang
     pdf(paste0(SAVE_DIR,'/','GCOR.pdf'),width=20,height=20)
     OUT=getPmatHEAT(PMAT,SHOW=T)
     dev.off()
+    
+<img src="https://github.com/jumphone/SCC/blob/master/img/PLOT2.png" width="300">    
+    
     HEAT=OUT$HEAT
     DIST=OUT$DIST
     ORDER=HEAT$colInd
@@ -89,8 +92,7 @@ Author: Feng Zhang
     CLUST=getCLUST(ORDER, DIST, CCUT=0.7, SHOW=T)
     dev.off()
     
-
-<img src="https://github.com/jumphone/Bioinformatics/raw/master/scRNAseq/try_20190424/src/CLUST.png" width="300">
+<img src="https://github.com/jumphone/SCC/blob/master/img/PLOT3.png" width="300">
 
     MLR=getMLR(CLUST, LR, PMAT)
     LR=MLR[,c(1:2)]
@@ -106,7 +108,9 @@ Author: Feng Zhang
       col=colorRampPalette(c('blue3','grey95','red3')) ,margins=c(10,15))
     dev.off()
 
-<img src="https://github.com/jumphone/Bioinformatics/raw/master/scRNAseq/try_20190424/src/CMAT.png" width="300">
+<img src="https://github.com/jumphone/SCC/blob/master/img/PLOT4.png" width="300">
+<img src="https://github.com/jumphone/SCC/blob/master/img/PLOT5.png" width="300">
+
 
     OUT=getPAIR(CMAT)
     PAIR=OUT$PAIR
@@ -118,7 +122,7 @@ Author: Feng Zhang
     CPlot(VEC,PAIR[1:200,],BINTAG)
     dev.off()
 
-<img src="https://github.com/jumphone/Bioinformatics/raw/master/scRNAseq/try_20190424/src/CPlot.png" width="300">
+<img src="https://github.com/jumphone/SCC/blob/master/img/PLOT6.png" width="300">
     
     
     
@@ -129,6 +133,8 @@ Author: Feng Zhang
     pdf(paste0(SAVE_DIR,'/','5DPlot.pdf'),width=100,height=100)
     DP=DPlot(NET, CN, COL=3)
     dev.off()
+
+<img src="https://github.com/jumphone/SCC/blob/master/img/PLOT7.png" width="300">
     
     ADP=p.adjust(DP,method='fdr')
     
@@ -143,8 +149,8 @@ Author: Feng Zhang
     barplot(DD,las=2,ylab='-log10(adjusted p-value)',col=CC)
     dev.off()
        
-<img src="https://github.com/jumphone/Bioinformatics/raw/master/scRNAseq/try_20190424/src/DPlot.png" width="300">
-    
+<img src="https://github.com/jumphone/SCC/blob/master/img/PLOT8.png" width="300">
+  
     
     
     CNET=c()
@@ -199,7 +205,7 @@ Author: Feng Zhang
         i=i+1}
     dev.off()
     
-<img src="https://github.com/jumphone/Bioinformatics/raw/master/scRNAseq/try_20190424/src/LPlot.png" width="300">    
+<img src="https://github.com/jumphone/SCC/blob/master/img/PLOT9.png" width="300">
     
        
     
