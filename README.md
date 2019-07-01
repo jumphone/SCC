@@ -25,26 +25,10 @@ Author: Feng Zhang
     pbmc=load('pbmc.RDS') # load Seurat Object
     
     
-    #---- !!! Changed in Seurat 3.0 !!! ----
-    ORITAG=as.character(pbmc@ident)
-    #--------------------------------------- 
-    #ORITAG=as.character(pbmc@active.ident)
-    #---------------------------------------     
+    ORITAG=as.character(pbmc@active.ident)   
+    VEC=pbmc@reductions$umap@cell.embeddings
+    pbmc.data=as.matrix(pbmc@assays$RNA@scale.data)
     
-    #---- !!! Changed in Seurat 3.0 !!! ----
-    VEC=pbmc@dr$umap@cell.embeddings
-    #--------------------------------------- 
-    # For Seurat 3.0, please use:
-    #VEC=pbmc@reductions$umap@cell.embeddings
-    #---------------------------------------
-    
-    #---- !!! Changed in Seurat 3.0 !!! ----
-    pbmc.data=as.matrix(pbmc@scale.data) 
-    #---------------------------------------
-    # For Seurat==3.0, please use:
-    # pbmc.data=as.matrix(pbmc@assays$RNA@scale.data)
-    #---------------------------------------
-   
     SAVE_DIR="./"
     
     used_cell=
@@ -77,7 +61,7 @@ Author: Feng Zhang
     
     pbmc@meta.data$bin=BINTAG
     pdf(paste0(SAVE_DIR,'/','1ID.pdf'),width=12,height=10)
-    DimPlot(pbmc,group.by='bin',reduction.use='umap',do.label=T)
+    DimPlot(pbmc,group.by='bin',reduction.use='umap', label=T)
     dev.off()
     
 <img src="https://github.com/jumphone/Bioinformatics/raw/master/scRNAseq/try_20190424/src/ID.png" width="300">
@@ -185,7 +169,7 @@ Author: Feng Zhang
         if(length(this_out_index)>0){ 
             colnames(this_out)=paste0(SIG_PAIR[i],'_|_',colnames(this_out))
             OUT=cbind(OUT,this_out)}
-        #####
+        #########################
         colnames(LP)=paste0(c('Lexp','Rexp'),'_',c(LT,RT))
         write.table(LP,file=paste0(SAVE_DIR,'/',as.character(SIG_INDEX[i]),'.tsv'),row.names=T,col.names=T,sep='\t',quote=F)
         })
