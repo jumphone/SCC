@@ -142,8 +142,29 @@ Author: Feng Zhang
     par(mar=c(20,5,5,5))
     barplot(DD,las=2,ylab='-log10(adjusted p-value)',col=CC)
     dev.off()
-    
+       
 <img src="https://github.com/jumphone/Bioinformatics/raw/master/scRNAseq/try_20190424/src/DPlot.png" width="300">
+    
+    
+    
+    CNET=c()
+    CNETSCORE=c()
+    TMP=DD[which(CC=='red')]
+    i=1
+    while(i <=length(TMP)){
+        this_source=unlist(strsplit(names(TMP)[i],split='_to_'))[1]
+        this_target=unlist(strsplit(names(TMP)[i],split='_to_'))[2]
+        CNET=cbind(CNET, c(this_source,this_target))
+        CNETSCORE=c(CNETSCORE, TMP[i])
+        
+        i=i+1}
+    
+    OUT=cbind(t(CNET),CNETSCORE)
+    colnames(OUT)=c('source','target','score_neg_log_adp')
+    write.table(OUT,file='CNET.txt',quote=F,sep='\t',row.names=F,col.names=F)
+    
+
+
 
     #SIG_INDEX=which(DP<0.05)    
     SIG_INDEX=which(ADP<0.05)
