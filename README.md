@@ -20,7 +20,7 @@ Author: Feng Zhang
     library(dplyr)
     library(Matrix)
     
-    source('https://raw.githubusercontent.com/jumphone/Bioinformatics/master/scRNAseq/try_20190424/SCC.R')
+    source('https://raw.githubusercontent.com/jumphone/SCC/master/SCC.R')
     
     pbmc=load('pbmc.RDS') # load Seurat Object
     
