@@ -7,7 +7,7 @@ Single-cell Communication
 
 Author: Feng Zhang
  
-Date: 20190501
+* New feature is only for Seurat3
 
 ### Prepare:
 
