@@ -59,7 +59,8 @@ Author: Feng Zhang
     saveRDS(BIN,file=paste0(SAVE_DIR,'/','BIN.RDS'))
     saveRDS(BINTAG,file=paste0(SAVE_DIR,'/','BINTAG.RDS'))
     
-    pbmc@meta.data$bin=BINTAG
+    pbmc@meta.data$bin=rep(NA, ncol(pbmc))
+    pbmc@meta.data$bin[USEDC]=BINTAG
     pdf(paste0(SAVE_DIR,'/','1ID.pdf'),width=12,height=10)
     DimPlot(pbmc,group.by='bin',reduction.use='umap', label=T)
     dev.off()
@@ -125,7 +126,7 @@ Author: Feng Zhang
     write.table(NET,file=paste0(SAVE_DIR,'/','NET.txt'),sep='\t',row.names=F,col.names=T,quote=F)
        
     CN=getCN(NET)
-    pdf(paste0(SAVE_DIR,'/','5DPlot.pdf'),width=20,height=20)
+    pdf(paste0(SAVE_DIR,'/','5DPlot.pdf'),width=100,height=100)
     DP=DPlot(NET, CN, COL=3)
     dev.off()
     
@@ -137,7 +138,7 @@ Author: Feng Zhang
     DD=sort(-log(IDP,10),decreasing=T)
     CC=rep('grey',length(DD))
     CC[which(DD> -log(0.05,10))]='red'
-    pdf(paste0(SAVE_DIR,'/','PVALUE.pdf'),width=20,height=20)
+    pdf(paste0(SAVE_DIR,'/','PVALUE.pdf'),width=100,height=100)
     par(mar=c(20,5,5,5))
     barplot(DD,las=2,ylab='-log10(adjusted p-value)',col=CC)
     dev.off()
@@ -150,7 +151,7 @@ Author: Feng Zhang
     TOP_NET=NET
     #TOP_NET=getNET(PAIR[1:500,], BINTAG,ORITAG )
     
-    pdf(paste0(SAVE_DIR,'/','6LPlot.pdf'),width=50,height=50)
+    pdf(paste0(SAVE_DIR,'/','6LPlot.pdf'),width=100,height=100)
     OUT=c()
     #OUT_TYPE=c()
     RCN=trunc(sqrt(length(SIG_PAIR))+1)
@@ -182,6 +183,21 @@ Author: Feng Zhang
        
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     ############################################
     OUT=t(OUT)
     OUT=unique(cbind(OUT,rownames(OUT)))
@@ -203,22 +219,6 @@ Author: Feng Zhang
     OUT=cbind(OUT,OUT_LT,OUT_RT)
     
  
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     
