@@ -1,5 +1,4 @@
 # SCC
-Single-cell Communication
 
 <img src="https://github.com/jumphone/Bioinformatics/raw/master/scRNAseq/try_20190424/src/SCC_LOGO.png" width="200">
 
