@@ -8,7 +8,7 @@ Author: Feng Zhang
 
 ### Prepare:
 
-    hash, Seurat, Rtsne
+    R package: hash, Seurat, Rtsne
 
 
 ### Usage:
