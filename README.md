@@ -28,9 +28,9 @@ Author: Feng Zhang
     
     SAVE_DIR="./"
     
-    used_cell=
+    used_cell= colnames(pbmc) # Used cell names
     
-    used_gene=
+    used_gene= VariableFeatures(pbmc) # Used gene names
     
     USEDC=which(colnames(pbmc.data) %in% used_cell)
     USEDG=which(rownames(pbmc.data) %in% used_gene)
