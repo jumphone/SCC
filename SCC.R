@@ -411,6 +411,8 @@ groupTAG <- function(BINTAG,LT,RT,LC,RC){
 
 getPmatHEAT <- function(PMAT, SHOW=FALSE){   
     DIST=cor(t(PMAT),method='spearman')
+    DIST=as.matrix(DIST)
+    DIST[which(is.na(DIST))]=0
     library('gplots')
     if(SHOW==FALSE){
         HEAT=heatmap.2(DIST,scale='none',dendrogram='both',Colv=TRUE,Rowv=TRUE,trace='none',symm=TRUE,
